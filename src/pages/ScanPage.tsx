@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Html5Qrcode, Html5QrcodeScannerState, Html5QrcodeSupportedFormats } from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
 import { verifyQRCode, ApiResponse } from '../services/apiService';
 import { obtenerTokenEstacion } from '../utils/helpers';
 
@@ -53,7 +53,8 @@ const ScanPage: React.FC<ScanPageProps> = ({ onScanComplete }) => {
         const config = {
           fps: 10,
           qrbox: { width: 250, height: 250 },
-          formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+          // QR_CODE is now passed directly as a number
+          formatsToSupport: [0], // 0 is for QR_CODE
           aspectRatio: window.innerWidth / window.innerHeight,
           showTorchButtonIfSupported: true,
           rememberLastUsedCamera: true,
@@ -120,7 +121,7 @@ const ScanPage: React.FC<ScanPageProps> = ({ onScanComplete }) => {
     } catch (error) {
       setError("Error al procesar el código QR. Intenta nuevamente.");
       
-      if (scannerRef.current && scannerRef.current.getState() === Html5QrcodeScannerState.PAUSED) {
+      if (scannerRef.current && scannerRef.current.isScanning) {
         await scannerRef.current.resume();
       }
     } finally {

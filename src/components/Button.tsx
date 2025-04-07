@@ -1,4 +1,3 @@
-// src/components/Button.tsx
 import React from 'react';
 
 interface ButtonProps {
@@ -6,15 +5,32 @@ interface ButtonProps {
   onClick: () => void;
   icon?: React.ReactNode;
   className?: string;
+  fullWidth?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, onClick, icon, className = '' }) => {
+const Button: React.FC<ButtonProps> = ({ 
+  children, 
+  onClick, 
+  icon, 
+  className = '',
+  fullWidth = false
+}) => {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center justify-center gap-2 w-full py-4 px-6 bg-white text-black font-medium rounded-md transition-colors ${className}`}
+      className={`
+        flex items-center justify-center gap-2 
+        ${fullWidth ? 'w-full' : 'max-w-xs mx-auto'} 
+        py-4 px-6 
+        bg-white text-black font-medium 
+        rounded-lg
+        transition-colors 
+        active:bg-gray-200
+        focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50
+        ${className}
+      `}
     >
-      {icon && <span>{icon}</span>}
+      {icon && <span className="flex-shrink-0">{icon}</span>}
       {children}
     </button>
   );
